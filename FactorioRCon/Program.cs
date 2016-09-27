@@ -13,7 +13,6 @@ namespace FactorioRcon
         [STAThread]
         static void Main()
         {
-            MessageBox.Show("Please report all encountered bugs to JetFox in IRC or Discord!", "Notice!");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form2());
