@@ -263,24 +263,30 @@ namespace FactorioRcon
         {
             while(!playerBackGround.CancellationPending)
             {
-                Thread.Sleep(10000);
-                
-                //if (playerBackGround.CancellationPending) return;
-                
-                sr.ServerCommand(Properties.Settings.Default.Players);
-                //Reset ChatBox
-                PlayersTextBox.Invoke(
-                    (MethodInvoker)
-                    delegate
-                   {
-                       int count = Regex.Matches(PlayersTextBox.Text, "(online)").Count;
-                       string pphole = "Players (" + count + ")";
-                       tabPage3.Text = pphole;
-                       PlayersTextBox.Text = "";
-                   }
-                   );
+            	for (int i = 1; i <= 100; i++) {
+            		Thread.Sleep(i*100);
+            		if (playerBackGround.CancellationPending) return;
+            	}         	               
+            	
+                if(sr.Connected)
+                {
+	                sr.ServerCommand(Properties.Settings.Default.Players);
+	                //Reset ChatBox
+	                PlayersTextBox.Invoke(
+	                    (MethodInvoker)
+	                    delegate
+	                   {
+	                       int count = Regex.Matches(PlayersTextBox.Text, "(online)").Count;
+	                       string pphole = "Players (" + count + ")";
+	                       tabPage3.Text = pphole;
+	                       PlayersTextBox.Text = "";
+	                   }
+	                   );
+                }
                     
             }
+            
+            
         }
 
         private void WhitelistBox_CheckedChanged(object sender, EventArgs e)
