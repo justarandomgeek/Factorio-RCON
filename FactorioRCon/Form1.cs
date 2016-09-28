@@ -29,10 +29,7 @@ namespace FactorioRcon
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            sr = new Rcon();
-            sr.ConnectionSuccess += new BoolInfo(sr_ConnectionSuccess);
-            sr.ServerOutput += new RconOutput(sr_ServerOutput);
-            sr.Errors += new RconOutput(sr_Errors);
+           
         }
 
         void sr_Errors(MessageCode code, string data)
@@ -159,6 +156,11 @@ namespace FactorioRcon
 
             IPEndPoint ipe = new IPEndPoint(ip, port);
 
+            sr = new Rcon();
+            sr.ConnectionSuccess += new BoolInfo(sr_ConnectionSuccess);
+            sr.ServerOutput += new RconOutput(sr_ServerOutput);
+            sr.Errors += new RconOutput(sr_Errors);
+            
             sr.Connect(ipe, PasswordBox.Text);
             while (!sr.Connected)
             {
@@ -174,10 +176,11 @@ namespace FactorioRcon
 
         private void Disconnect_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("You have been disconnected, but as we do not support reconnect please reopen the program.");
+            //MessageBox.Show("You have been disconnected, but as we do not support reconnect please reopen the program.");
             sr.Disconnect();
+            
             playerBackGround.CancelAsync();
-            Close();
+            
             ConnectButton.Text = "Connect";
             ConnectButton.Click += button2_Click;
             ConnectButton.Click -= Disconnect_Click;
@@ -258,10 +261,12 @@ namespace FactorioRcon
         
         private void playerBackGround_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
-            //if (!playerBackGround.CancellationPending)
+            while(!playerBackGround.CancellationPending)
             {
                 Thread.Sleep(10000);
+                
+                //if (playerBackGround.CancellationPending) return;
+                
                 sr.ServerCommand(Properties.Settings.Default.Players);
                 //Reset ChatBox
                 PlayersTextBox.Invoke(
